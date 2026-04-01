@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rich Text Editor | PB Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="portfolio-page">
+
+<!-- ============================================ -->
+<!-- PORTFOLIO HEADER                             -->
+<!-- ============================================ -->
+<header class="portfolio-header">
+    <div class="portfolio-header-inner">
+        <!-- <div class="portfolio-eyebrow">
+            <span class="portfolio-dot"></span>
+            Portfolio Project
+        </div> -->
+        <h3 class="portfolio-title">Rich Text Editor</h3>
+        <p class="portfolio-subtitle">
+            A production-ready, Rich text editor built from scratch with pure Vanilla JavaScript.
+            Zero dependencies. Fully modular. XSS-safe. Dark mode ready.
+        </p>
+        <div class="portfolio-tags">
+            <span class="portfolio-tag">Vanilla JS</span>
+            <span class="portfolio-tag">ES6+</span>
+            <span class="portfolio-tag">Zero Dependencies</span>
+            <span class="portfolio-tag">XSS Protected</span>
+            <span class="portfolio-tag">Dark Mode</span>
+            <span class="portfolio-tag">Responsive</span>
+            <span class="portfolio-tag">Modular Architecture</span>
+        </div>
+        <div class="portfolio-stats">
+            <div class="portfolio-stat">
+                <span class="portfolio-stat-number">16+</span>
+                <span class="portfolio-stat-label">Modules</span>
+            </div>
+            <div class="portfolio-stat">
+                <span class="portfolio-stat-number">50+</span>
+                <span class="portfolio-stat-label">Features</span>
+            </div>
+            <div class="portfolio-stat">
+                <span class="portfolio-stat-number">0</span>
+                <span class="portfolio-stat-label">Dependencies</span>
+            </div>
+            <div class="portfolio-stat">
+                <span class="portfolio-stat-number">~4.6k</span>
+                <span class="portfolio-stat-label">Lines of JS</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ============================================ -->
+<!-- EDITOR ROOT CONTAINER                        -->
+<!-- ============================================ -->
+<div class="portfolio-editor-wrapper">
+<div id="editor-root" class="rte">
+
+    <!-- ======================================== -->
+    <!-- TOOLBAR                                  -->
+    <!-- ======================================== -->
+    <div class="rte-toolbar" id="rte-toolbar">
+
+        <!-- Undo / Redo -->
+        <div class="rte-toolbar-group" data-group="history">
+            <button class="rte-btn" data-command="undo" title="Undo (Ctrl+Z)">
+                <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="redo" title="Redo (Ctrl+Y)">
+                <svg viewBox="0 0 24 24"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
+            </button>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="history"></div>
+
+        <!-- Cut / Copy / Paste -->
+        <div class="rte-toolbar-group" data-group="clipboard">
+            <button class="rte-btn" data-command="cut" title="Cut (Ctrl+X)">
+                <svg viewBox="0 0 24 24"><path d="M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13-1.14-.36-1.64L12 14l7 7h3v-1L9.64 7.64zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm6-7.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zM19 3l-6 6 2 2 7-7V3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="copy" title="Copy (Ctrl+C)">
+                <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="paste" title="Paste (Ctrl+V)">
+                <svg viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
+            </button>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="clipboard"></div>
+
+        <!-- Format Block Dropdown -->
+        <div class="rte-toolbar-group" data-group="format">
+            <div class="rte-dropdown" id="dropdown-format">
+                <button class="rte-btn rte-dropdown-toggle" title="Format Block">
+                    <span class="rte-dropdown-label">Paragraph</span>
+                    <svg class="rte-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div class="rte-dropdown-menu">
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="P">Paragraph</button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="H1"><h1 style="margin:0;font-size:1.4em;">Heading 1</h1></button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="H2"><h2 style="margin:0;font-size:1.2em;">Heading 2</h2></button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="H3"><h3 style="margin:0;font-size:1.1em;">Heading 3</h3></button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="H4"><h4 style="margin:0;font-size:1em;">Heading 4</h4></button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="H5"><h5 style="margin:0;font-size:.95em;">Heading 5</h5></button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="H6"><h6 style="margin:0;font-size:.85em;">Heading 6</h6></button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="BLOCKQUOTE">Blockquote</button>
+                    <button class="rte-dropdown-item" data-command="formatBlock" data-value="PRE">Preformatted</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="format"></div>
+
+        <!-- Font Family Dropdown -->
+        <div class="rte-toolbar-group" data-group="fonts">
+            <div class="rte-dropdown" id="dropdown-fontfamily">
+                <button class="rte-btn rte-dropdown-toggle" title="Font Family">
+                    <span class="rte-dropdown-label">Font</span>
+                    <svg class="rte-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div class="rte-dropdown-menu">
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="Arial, sans-serif" style="font-family:Arial">Arial</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="'Courier New', monospace" style="font-family:'Courier New'">Courier New</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="Georgia, serif" style="font-family:Georgia">Georgia</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="'Times New Roman', serif" style="font-family:'Times New Roman'">Times New Roman</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="Verdana, sans-serif" style="font-family:Verdana">Verdana</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="'Trebuchet MS', sans-serif" style="font-family:'Trebuchet MS'">Trebuchet MS</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="Impact, sans-serif" style="font-family:Impact">Impact</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="'Comic Sans MS', cursive" style="font-family:'Comic Sans MS'">Comic Sans MS</button>
+                    <button class="rte-dropdown-item" data-command="fontFamily" data-value="monospace" style="font-family:monospace">Monospace</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Font Size Dropdown -->
+        <div class="rte-toolbar-group" data-group="fontsize">
+            <div class="rte-dropdown" id="dropdown-fontsize">
+                <button class="rte-btn rte-dropdown-toggle" title="Font Size">
+                    <span class="rte-dropdown-label">Size</span>
+                    <svg class="rte-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div class="rte-dropdown-menu">
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="10px">10px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="12px">12px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="14px">14px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="16px">16px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="18px">18px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="20px">20px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="24px">24px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="28px">28px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="32px">32px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="36px">36px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="48px">48px</button>
+                    <button class="rte-dropdown-item" data-command="fontSize" data-value="64px">64px</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="fontsize"></div>
+
+        <!-- Text Formatting -->
+        <div class="rte-toolbar-group" data-group="formatting">
+            <button class="rte-btn" data-command="bold" title="Bold (Ctrl+B)">
+                <span class="rte-icon icon-text" style="font-weight:700;">B</span>
+            </button>
+            <button class="rte-btn" data-command="italic" title="Italic (Ctrl+I)">
+                <span class="rte-icon icon-text" style="font-style:italic;font-family:serif;">I</span>
+            </button>
+            <button class="rte-btn" data-command="underline" title="Underline (Ctrl+U)">
+                <span class="rte-icon icon-text" style="text-decoration:underline;">U</span>
+            </button>
+            <button class="rte-btn" data-command="strikethrough" title="Strikethrough">
+                <span class="rte-icon icon-text" style="text-decoration:line-through;">S</span>
+            </button>
+            <button class="rte-btn" data-command="superscript" title="Superscript">
+                <span class="rte-icon icon-text icon-script">X<sup>2</sup></span>
+            </button>
+            <button class="rte-btn" data-command="subscript" title="Subscript">
+                <span class="rte-icon icon-text icon-script">X<sub>2</sub></span>
+            </button>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="formatting"></div>
+
+        <!-- Colors -->
+        <div class="rte-toolbar-group" data-group="colors">
+            <div class="rte-color-wrapper" title="Text Color">
+                <button class="rte-btn rte-color-btn" id="forecolor-btn" data-color-target="fore">
+                    <svg viewBox="0 0 24 24"><path d="M11 2 5.5 16h2.2l1.1-3h6.4l1.1 3h2.2L13 2h-2zm-1.1 9L12 4.8 14.1 11H9.9z"/></svg>
+                    <span class="rte-color-indicator" id="forecolor-indicator" style="background:#000000;"></span>
+                </button>
+                <div class="rte-color-panel" id="forecolor-panel" style="display:none;">
+                    <div class="rte-color-panel-header">Text Color</div>
+                    <div class="rte-color-swatches" id="forecolor-swatches"></div>
+                    <div class="rte-color-recent-label">Recent Colors</div>
+                    <div class="rte-color-recent" id="forecolor-recent"></div>
+                    <div class="rte-color-divider"></div>
+                    <div class="rte-color-custom-label">Custom Color</div>
+                    <div class="rte-color-custom">
+                        <div class="rte-color-preview" id="forecolor-preview" style="background:#000000;"></div>
+                        <input type="text" class="rte-color-hex-input rte-input" id="forecolor-hex" placeholder="#000000" maxlength="7">
+                        <input type="color" class="rte-color-native" id="forecolor-native" value="#000000" title="Pick custom color">
+                        <button class="rte-color-apply-btn" id="forecolor-apply">Apply</button>
+                    </div>
+                </div>
+            </div>
+            <div class="rte-color-wrapper" title="Background Color">
+                <button class="rte-btn rte-color-btn" id="backcolor-btn" data-color-target="back">
+                    <svg viewBox="0 0 24 24"><path d="M16.6 3.5a1 1 0 0 0-1.4 0L9 9.7l-1-1-1.4 1.4 1 1L4 14.7c-.4.4-.4 1 0 1.4l4.3 4.3c.4.4 1 .4 1.4 0l7.9-7.9 1-1-1-1zM5.4 15.4l3-3 3 3-3 3-3-3z"/><path d="M19 19.5s-2 2.2-2 3.5a2 2 0 0 0 4 0c0-1.3-2-3.5-2-3.5z"/></svg>
+                    <span class="rte-color-indicator" id="backcolor-indicator" style="background:#ffff00;"></span>
+                </button>
+                <div class="rte-color-panel" id="backcolor-panel" style="display:none;">
+                    <div class="rte-color-panel-header">Background Color</div>
+                    <div class="rte-color-swatches" id="backcolor-swatches"></div>
+                    <div class="rte-color-recent-label">Recent Colors</div>
+                    <div class="rte-color-recent" id="backcolor-recent"></div>
+                    <div class="rte-color-divider"></div>
+                    <div class="rte-color-custom-label">Custom Color</div>
+                    <div class="rte-color-custom">
+                        <div class="rte-color-preview" id="backcolor-preview" style="background:#ffff00;"></div>
+                        <input type="text" class="rte-color-hex-input rte-input" id="backcolor-hex" placeholder="#ffff00" maxlength="7">
+                        <input type="color" class="rte-color-native" id="backcolor-native" value="#ffff00" title="Pick custom color">
+                        <button class="rte-color-apply-btn" id="backcolor-apply">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="colors"></div>
+
+        <!-- Alignment -->
+        <div class="rte-toolbar-group" data-group="alignment">
+            <button class="rte-btn" data-command="alignLeft" title="Align Left">
+                <svg viewBox="0 0 24 24"><path d="M3 3h18v2H3zm0 4h12v2H3zm0 4h18v2H3zm0 4h12v2H3zm0 4h18v2H3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="alignCenter" title="Align Center">
+                <svg viewBox="0 0 24 24"><path d="M3 3h18v2H3zm3 4h12v2H6zm-3 4h18v2H3zm3 4h12v2H6zm-3 4h18v2H3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="alignRight" title="Align Right">
+                <svg viewBox="0 0 24 24"><path d="M3 3h18v2H3zm6 4h12v2H9zm-6 4h18v2H3zm6 4h12v2H9zm-6 4h18v2H3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="alignJustify" title="Justify">
+                <svg viewBox="0 0 24 24"><path d="M3 3h18v2H3zm0 4h18v2H3zm0 4h18v2H3zm0 4h18v2H3zm0 4h18v2H3z"/></svg>
+            </button>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="alignment"></div>
+
+        <!-- Lists & Indent -->
+        <div class="rte-toolbar-group" data-group="lists">
+            <button class="rte-btn" data-command="orderedList" title="Ordered List">
+                <svg viewBox="0 0 24 24"><path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2zm1-9h1V4H2v1h1zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2zM7 5v2h14V5zm0 14h14v-2H7zm0-6h14v-2H7z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="unorderedList" title="Unordered List">
+                <svg viewBox="0 0 24 24"><path d="M4 10.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm0-6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm0 12a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM7 5v2h14V5zm0 14h14v-2H7zm0-6h14v-2H7z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="indent" title="Indent">
+                <svg viewBox="0 0 24 24"><path d="M3 21h18v-2H3zM3 8v8l4-4zm8 11h10v-2H11zM3 3v2h18V3zm8 4h10V5H11zm0 4h10V9H11z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="outdent" title="Outdent">
+                <svg viewBox="0 0 24 24"><path d="M3 21h18v-2H3zM7 8v8l-4-4zm4 11h10v-2H11zM3 3v2h18V3zm8 4h10V5H11zm0 4h10V9H11z"/></svg>
+            </button>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="lists"></div>
+
+        <!-- Line Height -->
+        <div class="rte-toolbar-group" data-group="lineheight">
+            <div class="rte-dropdown" id="dropdown-lineheight">
+                <button class="rte-btn rte-dropdown-toggle" title="Line Height">
+                    <svg viewBox="0 0 24 24"><path d="M9.5 4v1.5h5V4h-5zM9.5 18.5v1.5h5v-1.5h-5zM12 6l-3 3h2v6H9l3 3 3-3h-2V9h2l-3-3z"/></svg>
+                    <svg class="rte-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div class="rte-dropdown-menu">
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="1">1.0</button>
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="1.2">1.2</button>
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="1.4">1.4</button>
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="1.6">1.6</button>
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="1.8">1.8</button>
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="2">2.0</button>
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="2.5">2.5</button>
+                    <button class="rte-dropdown-item" data-command="lineHeight" data-value="3">3.0</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="lineheight"></div>
+
+        <!-- Insert Features -->
+        <div class="rte-toolbar-group" data-group="insert">
+            <button class="rte-btn" data-command="insertLink" title="Insert Link (Ctrl+K)">
+                <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.7 1.4-3.1 3.1-3.1h4V7H7a5 5 0 0 0 0 10h4v-1.9H7c-1.7 0-3.1-1.4-3.1-3.1zM8 13h8v-2H8zm9-6h-4v1.9h4c1.7 0 3.1 1.4 3.1 3.1s-1.4 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 0-10z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="removeLink" title="Remove Link">
+                <svg viewBox="0 0 24 24"><path d="M17 7h-4v1.9h4c1.7 0 3.1 1.4 3.1 3.1s-1.4 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 0-10zm-6 8H7A3.1 3.1 0 0 1 7 8.9h4V7H7a5 5 0 0 0 0 10h4v-2z"/><path d="M2 4l2-2 16 16-2 2z" fill="currentColor" opacity=".7"/></svg>
+            </button>
+            <button class="rte-btn" data-command="insertImage" title="Insert Image">
+                <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="insertTable" title="Insert Table">
+                <svg viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm8 16H5v-6h6v6zm0-8H5V5h6v6zm8 8h-6v-6h6v6zm0-8h-6V5h6v6z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="insertHtmlCode" title="Insert HTML Code">
+                <svg viewBox="0 0 24 24"><path d="M8.6 16.6 4 12l4.6-4.6L7.2 6 1.2 12l6 6zM15.4 16.6 20 12l-4.6-4.6L16.8 6l6 6-6 6zM9.9 20h2.1l2.1-16H12z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="insertHR" title="Horizontal Line">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18v2H3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="codeBlock" title="Code Block">
+                <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="blockquote" title="Blockquote">
+                <svg viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="insertDateTime" title="Insert Date/Time">
+                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="insertTOC" title="Generate Table of Contents">
+                <svg viewBox="0 0 24 24"><path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/></svg>
+            </button>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="insert"></div>
+
+        <!-- Clear Formatting, Emoji, Special Chars -->
+        <div class="rte-toolbar-group" data-group="extras">
+            <button class="rte-btn" data-command="clearFormatting" title="Clear Formatting">
+                <svg viewBox="0 0 24 24"><path d="M3.27 5L2 6.27l6.97 6.97L6.5 19h3l1.57-3.66L16.73 21 18 19.73 3.27 5zM6 5v.18L8.82 8h2.4l-.72 1.68 2.1 2.1L14.21 8H20V5H6z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="emoji" title="Emoji">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="specialChars" title="Special Characters">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            </button>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="extras"></div>
+
+        <!-- Text Case -->
+        <div class="rte-toolbar-group" data-group="textcase">
+            <div class="rte-dropdown" id="dropdown-textcase">
+                <button class="rte-btn rte-dropdown-toggle" title="Change Text Case">
+                    <span class="rte-dropdown-label">Aa</span>
+                    <svg class="rte-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div class="rte-dropdown-menu">
+                    <button class="rte-dropdown-item" data-command="textCaseUpper" data-value="upper">UPPERCASE</button>
+                    <button class="rte-dropdown-item" data-command="textCaseLower" data-value="lower">lowercase</button>
+                    <button class="rte-dropdown-item" data-command="textCaseTitle" data-value="title">Title Case</button>
+                    <button class="rte-dropdown-item" data-command="textCaseSentence" data-value="sentence">Sentence case</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="textcase"></div>
+
+        <!-- View & Mode -->
+        <div class="rte-toolbar-group" data-group="view">
+            <button class="rte-btn" data-command="findReplace" title="Find & Replace (Ctrl+H)">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="print" title="Print">
+                <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="selectAll" title="Select All (Ctrl+A)">
+                <svg viewBox="0 0 24 24"><path d="M3 5h2V3c-1.1 0-2 .9-2 2zm0 8h2v-2H3v2zm4 8h2v-2H7v2zM3 9h2V7H3v2zm10-6h-2v2h2V3zm6 0v2h2c0-1.1-.9-2-2-2zM5 21v-2H3c0 1.1.9 2 2 2zm-2-4h2v-2H3v2zM9 3H7v2h2V3zm2 18h2v-2h-2v2zm8-8h2v-2h-2v2zm0 8c1.1 0 2-.9 2-2h-2v2zm0-12h2V7h-2v2zm0 8h2v-2h-2v2zm-4 4h2v-2h-2v2zm0-16h2V3h-2v2zM7 17h10V7H7v10zm2-8h6v6H9V9z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="sourceView" title="Source Code View">
+                <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6z" opacity=".6"/><path d="M12.5 3l-1 1 5 16 1-1z" opacity=".8"/></svg>
+            </button>
+            <button class="rte-btn" data-command="fullscreen" title="Fullscreen">
+                <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="darkMode" title="Toggle Dark Mode">
+                <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.9 2.86 5.5 5.5 0 0 1-5.5-5.5c0-1.95 1-3.66 2.56-4.64A8.95 8.95 0 0 0 12 3z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="focusMode" title="Focus Mode">
+                <svg viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-7 7H3v4c0 1.1.9 2 2 2h4v-2H5v-4zM5 5h4V3H5c-1.1 0-2 .9-2 2v4h2V5zm14-2h-4v2h4v4h2V5c0-1.1-.9-2-2-2zm0 16h-4v2h4c1.1 0 2-.9 2-2v-4h-2v4z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="readingMode" title="Reading Mode">
+                <svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
+            </button>
+            <button class="rte-btn" data-command="keyboardHelp" title="Keyboard Shortcuts (Ctrl+/)">
+                <svg viewBox="0 0 24 24"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
+            </button>
+
+        </div>
+
+        <div class="rte-toolbar-divider" data-for-group="view"></div>
+
+        <!-- Export Options -->
+        <div class="rte-toolbar-group" data-group="export">
+            <div class="rte-dropdown" id="dropdown-export">
+                <button class="rte-btn rte-dropdown-toggle" title="Export">
+                    <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
+                    <svg class="rte-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div class="rte-dropdown-menu">
+                    <button class="rte-dropdown-item" data-command="exportHTML">Copy HTML</button>
+                    <button class="rte-dropdown-item" data-command="exportText">Copy Plain Text</button>
+                    <button class="rte-dropdown-item" data-command="downloadHTML">Download .html</button>
+                    <button class="rte-dropdown-item" data-command="downloadText">Download .txt</button>
+                    <button class="rte-dropdown-item" data-command="downloadMarkdown">Download .md</button>
+                    <button class="rte-dropdown-item" data-command="downloadPDF">Print / Save as PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- EDITOR AREA                              -->
+    <!-- ======================================== -->
+    <div class="rte-body" id="rte-body">
+        <div class="rte-editor" id="rte-editor" contenteditable="true" spellcheck="true"></div>
+        <textarea class="rte-source" id="rte-source"></textarea>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STATUS BAR                               -->
+    <!-- ======================================== -->
+    <div class="rte-statusbar" id="rte-statusbar">
+        <div class="rte-statusbar-left">
+            <span id="word-count">Words: 0</span>
+            <span class="rte-statusbar-sep">|</span>
+            <span id="char-count">Characters: 0</span>
+            <span class="rte-statusbar-sep">|</span>
+            <span id="reading-time">Reading time: 0 min</span>
+            <span class="rte-statusbar-sep rte-wc-goal-sep" id="wc-goal-sep" style="display:none;">|</span>
+            <span class="rte-wc-goal-wrapper" id="wc-goal-wrapper" style="display:none;">
+                <span id="wc-goal-text">Goal: 0/500</span>
+                <div class="rte-wc-goal-bar">
+                    <div class="rte-wc-goal-fill" id="wc-goal-fill"></div>
+                </div>
+            </span>
+        </div>
+        <div class="rte-statusbar-right">
+            <button class="rte-statusbar-btn" id="wc-goal-btn" title="Set Word Count Goal">Goal</button>
+            <span id="autosave-status"></span>
+        </div>
+    </div>
+</div>
+</div><!-- /.portfolio-editor-wrapper -->
+
+<!-- ============================================ -->
+<!-- PORTFOLIO FOOTER                             -->
+<!-- ============================================ -->
+<footer class="portfolio-footer">
+    <div class="portfolio-footer-inner">
+        <p>© 2026 Rich Text Editor &nbsp;·&nbsp; Built by Prakash using Vanilla JavaScript, HTML5 &amp; CSS3</p>
+        <div class="portfolio-footer-tech">
+            <span class="portfolio-footer-badge">Vanilla JS</span>
+            <span class="portfolio-footer-badge">HTML5</span>
+            <span class="portfolio-footer-badge">CSS3</span>
+            <span class="portfolio-footer-badge">ES6 Modules</span>
+            <!-- <span class="portfolio-footer-badge">Pub/Sub Pattern</span>
+            <span class="portfolio-footer-badge">Command Pattern</span> -->
+        </div>
+    </div>
+</footer>
+
+<!-- ============================================ -->
+<!-- FIND & REPLACE BAR                           -->
+<!-- ============================================ -->
+<div class="rte-find-bar" id="rte-find-bar" style="display:none;">
+    <div class="rte-find-bar-inner">
+        <div class="rte-find-row">
+            <input type="text" class="rte-input rte-find-input" id="find-input" placeholder="Find...">
+            <span class="rte-find-count" id="find-count">0 results</span>
+            <button class="rte-btn rte-find-btn" id="find-prev" title="Previous">
+                <svg viewBox="0 0 24 24" width="16" height="16"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+            </button>
+            <button class="rte-btn rte-find-btn" id="find-next" title="Next">
+                <svg viewBox="0 0 24 24" width="16" height="16"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+            </button>
+        </div>
+        <div class="rte-find-row">
+            <input type="text" class="rte-input rte-find-input" id="replace-input" placeholder="Replace with...">
+            <button class="rte-modal-btn rte-btn-primary rte-find-action" id="replace-btn">Replace</button>
+            <button class="rte-modal-btn rte-btn-primary rte-find-action" id="replace-all-btn">Replace All</button>
+        </div>
+        <div class="rte-find-row rte-find-options">
+            <label class="rte-find-option"><input type="checkbox" id="find-case"> Match case</label>
+            <label class="rte-find-option"><input type="checkbox" id="find-whole"> Whole word</label>
+            <label class="rte-find-option"><input type="checkbox" id="find-regex"> Regex</label>
+        </div>
+    </div>
+    <button class="rte-modal-close rte-find-close" id="find-close">&times;</button>
+</div>
+
+<!-- ============================================ -->
+<!-- LINK MODAL                                   -->
+<!-- ============================================ -->
+<div class="rte-modal-overlay" id="modal-link">
+    <div class="rte-modal">
+        <div class="rte-modal-header">
+            <h3>Insert Link</h3>
+            <button class="rte-modal-close" data-modal-close="modal-link">&times;</button>
+        </div>
+        <div class="rte-modal-body">
+            <div class="rte-form-group">
+                <label for="link-url">URL</label>
+                <input type="url" id="link-url" placeholder="https://example.com" class="rte-input">
+            </div>
+            <div class="rte-form-group">
+                <label for="link-text">Text</label>
+                <input type="text" id="link-text" placeholder="Link text" class="rte-input">
+            </div>
+            <div class="rte-form-group">
+                <label for="link-title">Title (optional)</label>
+                <input type="text" id="link-title" placeholder="Tooltip text" class="rte-input">
+            </div>
+            <div class="rte-form-group rte-checkbox-group">
+                <input type="checkbox" id="link-newtab" checked>
+                <label for="link-newtab">Open in new tab</label>
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="rte-modal-btn rte-btn-cancel" data-modal-close="modal-link">Cancel</button>
+            <button class="rte-modal-btn rte-btn-primary" id="link-insert-btn">Insert Link</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- IMAGE MODAL                                  -->
+<!-- ============================================ -->
+<div class="rte-modal-overlay" id="modal-image">
+    <div class="rte-modal">
+        <div class="rte-modal-header">
+            <h3>Insert Image</h3>
+            <button class="rte-modal-close" data-modal-close="modal-image">&times;</button>
+        </div>
+        <div class="rte-modal-body">
+            <div class="rte-tabs">
+                <button class="rte-tab active" data-tab="upload">Upload</button>
+                <button class="rte-tab" data-tab="url">URL</button>
+            </div>
+            <div class="rte-tab-content active" id="tab-upload">
+                <div class="rte-upload-area" id="image-upload-area">
+                    <svg viewBox="0 0 24 24" width="48" height="48"><path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z" fill="currentColor" opacity=".5"/></svg>
+                    <p>Click to upload or drag & drop</p>
+                    <input type="file" id="image-file-input" accept="image/*" hidden>
+                </div>
+                <div id="image-preview-container" class="rte-image-preview" style="display:none;">
+                    <img id="image-preview" src="" alt="Preview">
+                </div>
+            </div>
+            <div class="rte-tab-content" id="tab-url" style="display:none;">
+                <div class="rte-form-group">
+                    <label for="image-url">Image URL</label>
+                    <input type="url" id="image-url" placeholder="https://example.com/image.jpg" class="rte-input">
+                </div>
+            </div>
+            <div class="rte-form-group">
+                <label for="image-alt">Alt Text</label>
+                <input type="text" id="image-alt" placeholder="Describe the image" class="rte-input">
+            </div>
+            <div class="rte-form-group">
+                <label for="image-width">Width (optional)</label>
+                <input type="text" id="image-width" placeholder="e.g. 400 or 50%" class="rte-input">
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="rte-modal-btn rte-btn-cancel" data-modal-close="modal-image">Cancel</button>
+            <button class="rte-modal-btn rte-btn-primary" id="image-insert-btn">Insert Image</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- TABLE MODAL                                  -->
+<!-- ============================================ -->
+<div class="rte-modal-overlay" id="modal-table">
+    <div class="rte-modal">
+        <div class="rte-modal-header">
+            <h3>Insert Table</h3>
+            <button class="rte-modal-close" data-modal-close="modal-table">&times;</button>
+        </div>
+        <div class="rte-modal-body">
+            <p class="rte-table-grid-label">Select table size: <span id="table-size-label">0 × 0</span></p>
+            <div class="rte-table-grid" id="table-grid"></div>
+            <div class="rte-form-row">
+                <div class="rte-form-group">
+                    <label for="table-rows">Rows</label>
+                    <input type="number" id="table-rows" value="3" min="1" max="50" class="rte-input">
+                </div>
+                <div class="rte-form-group">
+                    <label for="table-cols">Columns</label>
+                    <input type="number" id="table-cols" value="3" min="1" max="20" class="rte-input">
+                </div>
+            </div>
+            <div class="rte-form-group rte-checkbox-group">
+                <input type="checkbox" id="table-header" checked>
+                <label for="table-header">Include header row</label>
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="rte-modal-btn rte-btn-cancel" data-modal-close="modal-table">Cancel</button>
+            <button class="rte-modal-btn rte-btn-primary" id="table-insert-btn">Insert Table</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- HTML CODE MODAL                              -->
+<!-- ============================================ -->
+<div class="rte-modal-overlay" id="modal-html-code">
+    <div class="rte-modal rte-html-modal">
+        <div class="rte-modal-header">
+            <h3>Insert HTML Code</h3>
+            <button class="rte-modal-close" data-modal-close="modal-html-code">&times;</button>
+        </div>
+        <div class="rte-modal-body">
+            <div class="rte-html-toolbar">
+                <span class="rte-html-zoom-label">Zoom</span>
+                <button class="rte-modal-btn rte-btn-cancel rte-html-zoom-btn" id="html-zoom-out">-</button>
+                <span class="rte-html-zoom-value" id="html-zoom-value">100%</span>
+                <button class="rte-modal-btn rte-btn-cancel rte-html-zoom-btn" id="html-zoom-in">+</button>
+            </div>
+            <div class="rte-form-group">
+                <textarea id="html-code-input" class="rte-input rte-html-input" rows="12" placeholder="Paste HTML here..."></textarea>
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="rte-modal-btn rte-btn-cancel" data-modal-close="modal-html-code">Cancel</button>
+            <button class="rte-modal-btn rte-btn-primary" id="html-insert-btn">Insert HTML</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SOURCE CODE VIEW MODAL                       -->
+<!-- ============================================ -->
+<div class="rte-modal-overlay" id="modal-source-view">
+    <div class="rte-modal rte-source-modal">
+        <div class="rte-modal-header">
+            <h3>Source Code View</h3>
+            <button class="rte-modal-close" data-modal-close="modal-source-view">&times;</button>
+        </div>
+        <div class="rte-modal-body">
+            <div class="rte-source-toolbar">
+                <span class="rte-source-info" id="source-info">HTML Source</span>
+                <div class="rte-source-actions">
+                    <button class="rte-modal-btn rte-btn-cancel rte-source-btn" id="source-copy" title="Copy to Clipboard">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        Copy
+                    </button>
+                    <button class="rte-modal-btn rte-btn-cancel rte-source-btn" id="source-format" title="Format Code">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+                        Format
+                    </button>
+                </div>
+            </div>
+            <div class="rte-source-editor-wrapper">
+                <div class="rte-source-line-numbers" id="source-line-numbers"></div>
+                <textarea id="source-code-input" class="rte-input rte-source-input" spellcheck="false" wrap="off"></textarea>
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="rte-modal-btn rte-btn-cancel" data-modal-close="modal-source-view">Cancel</button>
+            <button class="rte-modal-btn rte-btn-primary" id="source-apply-btn">Apply Changes</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- EMOJI PICKER                                 -->
+<!-- ============================================ -->
+<div class="rte-emoji-picker" id="emoji-picker" style="display:none;">
+    <div class="rte-emoji-header">
+        <input type="text" class="rte-emoji-search rte-input" id="emoji-search" placeholder="Search emoji...">
+    </div>
+    <div class="rte-emoji-categories" id="emoji-categories"></div>
+    <div class="rte-emoji-grid" id="emoji-grid"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- CONTEXT MENU                                 -->
+<!-- ============================================ -->
+<div class="rte-context-menu" id="rte-context-menu" style="display:none;">
+    <button class="rte-context-item" data-command="cut">
+        <span>Cut</span><span class="rte-shortcut">Ctrl+X</span>
+    </button>
+    <button class="rte-context-item" data-command="copy">
+        <span>Copy</span><span class="rte-shortcut">Ctrl+C</span>
+    </button>
+    <button class="rte-context-item" data-command="paste">
+        <span>Paste</span><span class="rte-shortcut">Ctrl+V</span>
+    </button>
+    <div class="rte-context-separator"></div>
+    <button class="rte-context-item" data-command="bold">
+        <span>Bold</span><span class="rte-shortcut">Ctrl+B</span>
+    </button>
+    <button class="rte-context-item" data-command="italic">
+        <span>Italic</span><span class="rte-shortcut">Ctrl+I</span>
+    </button>
+    <button class="rte-context-item" data-command="underline">
+        <span>Underline</span><span class="rte-shortcut">Ctrl+U</span>
+    </button>
+    <div class="rte-context-separator"></div>
+    <button class="rte-context-item" data-command="insertLink">
+        <span>Insert Link</span><span class="rte-shortcut">Ctrl+K</span>
+    </button>
+    <button class="rte-context-item" data-command="removeLink">
+        <span>Remove Link</span>
+    </button>
+    <div class="rte-context-separator" id="ctx-table-sep" style="display:none;"></div>
+    <button class="rte-context-item" id="ctx-row-above" data-command="tableRowAbove" style="display:none;">
+        <span>Insert Row Above</span>
+    </button>
+    <button class="rte-context-item" id="ctx-row-below" data-command="tableRowBelow" style="display:none;">
+        <span>Insert Row Below</span>
+    </button>
+    <button class="rte-context-item" id="ctx-col-left" data-command="tableColLeft" style="display:none;">
+        <span>Insert Column Left</span>
+    </button>
+    <button class="rte-context-item" id="ctx-col-right" data-command="tableColRight" style="display:none;">
+        <span>Insert Column Right</span>
+    </button>
+    <button class="rte-context-item" id="ctx-del-row" data-command="tableDeleteRow" style="display:none;">
+        <span>Delete Row</span>
+    </button>
+    <button class="rte-context-item" id="ctx-del-col" data-command="tableDeleteCol" style="display:none;">
+        <span>Delete Column</span>
+    </button>
+    <button class="rte-context-item" id="ctx-del-table" data-command="tableDelete" style="display:none;">
+        <span>Delete Table</span>
+    </button>
+    <button class="rte-context-item" id="ctx-merge-cells" data-command="tableMergeCells" style="display:none;">
+        <span>Merge Cells</span>
+    </button>
+    <button class="rte-context-item" id="ctx-split-cell" data-command="tableSplitCell" style="display:none;">
+        <span>Split Cell</span>
+    </button>
+    <button class="rte-context-item" id="ctx-select-row" data-command="tableSelectRow" style="display:none;">
+        <span>Select Row</span>
+    </button>
+    <button class="rte-context-item" id="ctx-select-col" data-command="tableSelectCol" style="display:none;">
+        <span>Select Column</span>
+    </button>
+    <button class="rte-context-item" id="ctx-select-table" data-command="tableSelectAll" style="display:none;">
+        <span>Select Entire Table</span>
+    </button>
+</div>
+
+<!-- ============================================ -->
+<!-- SPECIAL CHARACTERS PICKER                    -->
+<!-- ============================================ -->
+<div class="rte-special-chars" id="special-chars-picker" style="display:none;">
+    <div class="rte-special-chars-header">
+        <input type="text" class="rte-input rte-special-chars-search" id="special-chars-search" placeholder="Search characters...">
+    </div>
+    <div class="rte-special-chars-categories" id="special-chars-categories"></div>
+    <div class="rte-special-chars-grid" id="special-chars-grid"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- DATE/TIME PICKER                             -->
+<!-- ============================================ -->
+<div class="rte-datetime-picker" id="datetime-picker" style="display:none;">
+    <div class="rte-datetime-header">Insert Date / Time</div>
+    <div class="rte-datetime-options" id="datetime-options"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- KEYBOARD SHORTCUTS MODAL                     -->
+<!-- ============================================ -->
+<div class="rte-modal-overlay" id="modal-shortcuts">
+    <div class="rte-modal rte-shortcuts-modal">
+        <div class="rte-modal-header">
+            <h3>Keyboard Shortcuts</h3>
+            <button class="rte-modal-close" data-modal-close="modal-shortcuts">&times;</button>
+        </div>
+        <div class="rte-modal-body rte-shortcuts-body" id="shortcuts-body"></div>
+    </div>
+</div>
+
+
+
+<!-- ============================================ -->
+<!-- WORD COUNT GOAL MODAL                        -->
+<!-- ============================================ -->
+<div class="rte-modal-overlay" id="modal-wc-goal">
+    <div class="rte-modal">
+        <div class="rte-modal-header">
+            <h3>Set Writing Goal</h3>
+            <button class="rte-modal-close" data-modal-close="modal-wc-goal">&times;</button>
+        </div>
+        <div class="rte-modal-body">
+            <div class="rte-form-group">
+                <label>Goal Type</label>
+                <div class="rte-radio-group">
+                    <label class="rte-radio-label">
+                        <input type="radio" name="wc-goal-type" value="words" checked>
+                        <span>Word Count</span>
+                    </label>
+                    <label class="rte-radio-label">
+                        <input type="radio" name="wc-goal-type" value="chars">
+                        <span>Character Count</span>
+                    </label>
+                </div>
+            </div>
+            <div class="rte-form-group">
+                <label for="wc-goal-input">Target count</label>
+                <input type="number" id="wc-goal-input" placeholder="e.g. 500" min="1" max="1000000" class="rte-input">
+            </div>
+            <div class="rte-form-group rte-checkbox-group">
+                <input type="checkbox" id="wc-goal-notify" checked>
+                <label for="wc-goal-notify">Notify when goal is reached</label>
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="rte-modal-btn rte-btn-cancel" id="wc-goal-clear">Clear Goal</button>
+            <button class="rte-modal-btn rte-btn-primary" id="wc-goal-set">Set Goal</button>
+        </div>
+    </div>
+</div>
+
+<script src="editor.js"></script>
+
+<!-- Reading Mode Exit Button -->
+<button class="rte-reading-exit" id="reading-mode-exit" style="display:none;">Exit Reading Mode</button>
+</body>
+</html>
