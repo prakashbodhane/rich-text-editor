@@ -2383,7 +2383,7 @@ body:has(.rte.dark-mode) .portfolio-editor-wrapper {
 
     .portfolio-stat {
         padding: 14px 20px;
-        min-width: 50%;
+         width: 50%;
         border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
