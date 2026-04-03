@@ -2655,11 +2655,11 @@ class SpecialCharsPicker {
         if (!this._picker) return;
         this._editor.selection.save();
         const rect = anchorEl.getBoundingClientRect();
-        const editorRect = document.getElementById('editor-root').getBoundingClientRect();
         this._picker.style.display = 'flex';
-        this._picker.style.position = 'absolute';
-        this._picker.style.top = (rect.bottom - editorRect.top + 4) + 'px';
-        this._picker.style.left = Math.min(rect.left - editorRect.left, editorRect.width - 350) + 'px';
+        /* Position below the button using fixed viewport coordinates */
+        this._picker.style.position = 'fixed';
+        this._picker.style.top = (rect.bottom + 4) + 'px';
+        this._picker.style.left = Math.min(rect.left, window.innerWidth - 350) + 'px';
         this._visible = true;
 
         setTimeout(() => {
