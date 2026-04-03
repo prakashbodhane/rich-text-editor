@@ -1467,7 +1467,7 @@ body:has(.rte.dark-mode) {
    Emoji Picker
    ---------------------------------------- */
 .rte-emoji-picker {
-    position: absolute;
+    position: fixed;
     width: 320px;
     max-height: 360px;
     background: var(--rte-dropdown-bg);
